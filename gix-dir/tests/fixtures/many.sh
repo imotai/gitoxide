@@ -351,3 +351,104 @@ git clone submodule multiple-submodules
   git submodule add ../submodule a/b
   git commit -m "add modules"
 )
+
+git clone submodule one-ignored-submodule
+(cd one-ignored-submodule
+  git submodule add ../submodule submodule
+  echo '/submodule/' > .gitignore
+  echo '*' > submodule/.gitignore
+  git commit -m "add seemingly ignored submodule"
+)
+
+git init slash-in-root-and-negated
+(cd slash-in-root-and-negated
+  cat <<'EOF' >.gitignore
+/
+!file
+!*.md
+!.github
+!.github/**
+EOF
+  touch file readme.md
+  mkdir .github
+  touch .github/workflow.yml
+  git add .github readme.md .gitignore
+  git commit -m "init"
+)
+
+git init star-in-root-and-negated
+(cd star-in-root-and-negated
+  cat <<'EOF' >.gitignore
+*
+!file
+!.gitignore
+!*.md
+!.github
+!.github/**
+EOF
+  touch file readme.md
+  mkdir .github
+  touch .github/workflow.yml
+  git add .github readme.md .gitignore
+  git commit -m "init"
+)
+
+git init slash-in-subdir-and-negated
+(cd slash-in-subdir-and-negated
+  mkdir sub
+  (cd sub
+    cat <<'EOF' >.gitignore
+/
+!file
+!*.md
+!.github
+!.github/**
+EOF
+    touch file readme.md
+    mkdir .github
+    touch .github/workflow.yml
+    git add .github readme.md .gitignore
+    git commit -m "init"
+  )
+)
+
+git init star-in-subdir-and-negated
+(cd star-in-subdir-and-negated
+  mkdir sub
+  (cd sub
+    cat <<'EOF' >.gitignore
+*
+!file
+!.gitignore
+!*.md
+!.github
+!.github/**
+EOF
+    touch file readme.md
+    mkdir .github
+    touch .github/workflow.yml
+    git add .github readme.md .gitignore
+    git commit -m "init"
+  )
+)
+
+git init with-sub-repo
+(cd with-sub-repo
+  echo '*' > .gitignore
+  git add -f .gitignore
+  git clone ../dir-with-file sub-repo
+)
+
+git clone dir-with-tracked-file in-repo-worktree
+(cd in-repo-worktree
+  git worktree add worktree
+  git worktree add -b other-worktree dir/worktree
+)
+
+git clone dir-with-tracked-file in-repo-hidden-worktree
+(cd in-repo-hidden-worktree
+  echo '/hidden/' > .gitignore
+  mkdir -p hidden/subdir
+  touch hidden/file
+  git worktree add -b worktree-branch hidden/subdir/worktree
+)

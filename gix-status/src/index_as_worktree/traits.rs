@@ -52,9 +52,11 @@ pub trait ReadData<'a> {
 ///
 #[allow(clippy::empty_docs)]
 pub mod read_data {
-    use std::sync::atomic::{AtomicU64, Ordering};
+    use std::sync::atomic::Ordering;
 
     use gix_filter::pipeline::convert::ToGitOutcome;
+
+    use crate::AtomicU64;
 
     /// A stream with worktree file data.
     pub struct Stream<'a> {

@@ -2,7 +2,7 @@ use std::{
     io,
     path::Path,
     slice::Chunks,
-    sync::atomic::{AtomicU64, AtomicUsize, Ordering},
+    sync::atomic::{AtomicUsize, Ordering},
 };
 
 use bstr::BStr;
@@ -19,7 +19,7 @@ use crate::{
         types::{Error, Options},
         Change, Conflict, EntryStatus, Outcome, VisitEntry,
     },
-    is_dir_to_mode, SymlinkCheck,
+    is_dir_to_mode, AtomicU64, SymlinkCheck,
 };
 
 /// Calculates the changes that need to be applied to an `index` to match the state of the `worktree` and makes them
